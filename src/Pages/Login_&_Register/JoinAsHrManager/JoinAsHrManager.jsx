@@ -1,13 +1,13 @@
-import SocialLogin from "./SocialLogin";
-import React, { useState } from "react";
-import LoginModal from "../Shared/LoginModal/LoginModal";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import Swal from "sweetalert2";
+import SocialLogin from "../SocialLogin";
+import LoginModal from "@/Pages/Shared/LoginModal/LoginModal";
 import { useForm } from "react-hook-form";
 import useAuth from "@/Hooks/useAuth";
-import useAxionPublic from "../../Hooks/useAxiosPublic";
-import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+import React, { useState } from "react";
+import useAxionPublic from "../../../Hooks/useAxiosPublic";
 
-const Register = () => {
+const JoinAsHrManager = () => {
   const [showForm, setShowForm] = React.useState(false);
   const axionPublic = useAxionPublic();
   const [showPassword, setShowPassword] = useState(false);
@@ -166,4 +166,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default JoinAsHrManager;

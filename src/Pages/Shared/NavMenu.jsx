@@ -1,4 +1,4 @@
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { Button } from "@/components/ui/button";
 import useAuth from "@/Hooks/useAuth";
@@ -14,7 +14,7 @@ const NavMenu = () => {
   const handleLogOut = () => {
     logOut();
   };
-  const role = "hr_manager";
+  const role = "";
 
   const menuLinks = (
     <>
