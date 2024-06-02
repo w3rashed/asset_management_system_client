@@ -2,9 +2,13 @@ import { Link, NavLink } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { Button } from "@/components/ui/button";
 import useAuth from "@/Hooks/useAuth";
+import React from "react";
+import LoginModal from "./LoginModal/LoginModal";
 
 const NavMenu = () => {
   const { user, logOut } = useAuth();
+  const [showForm, setShowForm] = React.useState(false);
+  const [showInfo, setShowInfo] = React.useState(false);
   console.log(user?.email);
 
   const handleLogOut = () => {
@@ -276,16 +280,22 @@ const NavMenu = () => {
         <ul className="menu menu-horizontal px-1">{menuLinks}</ul>
       </div>
       <div className="navbar-end">
-        {user ? (
+        {user && (
           <>
             <Button onClick={handleLogOut} className=" btn-active ">
               SIGN OUT
             </Button>
           </>
+        )}
+        {user ? (
+          <div className="ml-2" onClick={() => setShowInfo(!showInfo)}>
+            <img className="rounded-full size-16" src={user.photoURL} alt="" />
+          </div>
         ) : (
-          <Link to="/login">
-            <Button>Login</Button>
-          </Link>
+          <Button onClick={() => setShowForm(true)}>Login</Button>
+        )}
+        {showForm && !user && (
+          <LoginModal isOpen={showForm} closeModal={() => setShowForm(false)} />
         )}
       </div>
     </div>

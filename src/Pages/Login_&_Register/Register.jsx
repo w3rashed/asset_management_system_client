@@ -1,9 +1,9 @@
-import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
-import { FaGoogle } from "react-icons/fa";
 import SocialLogin from "./SocialLogin";
+import React from "react";
+import LoginModal from "../Shared/LoginModal/LoginModal";
 
 const Register = () => {
+  const [showForm, setShowForm] = React.useState(false);
   return (
     <div className="w-2/4 mx-auto">
       <form className="card-body">
@@ -38,10 +38,12 @@ const Register = () => {
           <button className="btn btn-primary">Register</button>
         </div>
       </form>
-      <SocialLogin></SocialLogin>
-      <p>
-        Alredy have an account <Link to="/login">Login</Link>
+      <p className="flex gap-2">
+        Alredy have an account{" "}
+        <LoginModal isOpen={showForm} closeModal={() => setShowForm(false)} />
+        <button onClick={() => setShowForm(true)}>Login</button>
       </p>
+      <SocialLogin></SocialLogin>
     </div>
   );
 };

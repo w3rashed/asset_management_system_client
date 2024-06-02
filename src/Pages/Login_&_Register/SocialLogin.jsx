@@ -20,23 +20,24 @@ const SocialLogin = () => {
         showConfirmButton: false,
         timer: 1500,
       });
-      const userInfo = {
-        email: res.user?.email,
-        name: res.user?.displayName,
-      };
-      axiosPublic.post("/users", userInfo).then((res) => {
-        console.log(res.data);
-        navigate("/");
-      });
+      navigate("/");
+      // const userInfo = {
+      //   email: res.user?.email,
+      //   name: res.user?.displayName,
+      // };
+      // axiosPublic.post("/users", userInfo).then((res) => {
+      //   console.log(res.data);
+      //   navigate("/");
+      // });
     });
   };
   return (
     <div>
       <div className="divider">OR</div>
-      <div>
+      <div className="flex justify-center">
         <Button onClick={handleGoogleLogin} className="flex gap-2">
           <GrGoogle></GrGoogle>
-          Button
+          Google
         </Button>
       </div>
     </div>
