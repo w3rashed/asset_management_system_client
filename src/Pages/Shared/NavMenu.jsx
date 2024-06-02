@@ -4,17 +4,30 @@ import { Button } from "@/components/ui/button";
 import useAuth from "@/Hooks/useAuth";
 import React from "react";
 import LoginModal from "./LoginModal/LoginModal";
+import { useQuery } from "@tanstack/react-query";
+import useAxiosPublic from "@/Hooks/useAxiosPublic";
 
 const NavMenu = () => {
   const { user, logOut } = useAuth();
+  const axiosPublic = useAxiosPublic();
   const [showForm, setShowForm] = React.useState(false);
   const [showInfo, setShowInfo] = React.useState(false);
   console.log(user?.email);
 
+  const { data: item = {} } = useQuery({
+    queryKey: ["users", user?.email],
+    queryFn: async () => {
+      const res = await axiosPublic.get(`/users/${user?.email}`);
+      return res.data;
+    },
+  });
+  console.log(item);
+
   const handleLogOut = () => {
     logOut();
   };
-  const role = "";
+  const userRole = item.role;
+  const role = userRole;
 
   const menuLinks = (
     <>
@@ -141,7 +154,7 @@ const NavMenu = () => {
         </>
       )}
       {/* hr manager  */}
-      {role == "hr_manager" && (
+      {role == "hrManager" && (
         <>
           <li>
             <NavLink
