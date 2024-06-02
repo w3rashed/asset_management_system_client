@@ -13,9 +13,9 @@ const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_ke
 
 const JoinAsEmployee = () => {
   const [showForm, setShowForm] = React.useState(false);
-  const axionPublic = useAxionPublic();
+  const axiosPublic = useAxionPublic();
   const [showPassword, setShowPassword] = useState(false);
-  const { createUser, updateUserProfile, user } = useAuth();
+  const { createUser, updateUserProfile } = useAuth();
   //   console.log(user);
   const {
     register,
@@ -44,8 +44,10 @@ const JoinAsEmployee = () => {
           const userInfo = {
             name: data.name,
             email: data.email,
+            birth_date: data.date,
+            role: "employee",
           };
-          axionPublic.post("/users", userInfo).then((res) => {
+          axiosPublic.post("/users", userInfo).then((res) => {
             if (res.data.insertedId) {
               reset();
               Swal.fire({
