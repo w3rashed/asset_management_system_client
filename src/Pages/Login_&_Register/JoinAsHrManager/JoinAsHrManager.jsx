@@ -6,13 +6,17 @@ import { useForm } from "react-hook-form";
 import useAuth from "@/Hooks/useAuth";
 import React, { useState } from "react";
 import useAxionPublic from "../../../Hooks/useAxiosPublic";
+import axios from "axios";
+
+const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
+const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
 
 const JoinAsHrManager = () => {
   const [showForm, setShowForm] = React.useState(false);
-  const axionPublic = useAxionPublic();
+  const axiosPublic = useAxionPublic();
   const [showPassword, setShowPassword] = useState(false);
-
   const { createUser, updateUserProfile } = useAuth();
+
   const {
     register,
     handleSubmit,
@@ -21,31 +25,53 @@ const JoinAsHrManager = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     console.log(data);
-    createUser(data.email, data.password).then((res) => {
-      const loggedUser = res.user;
-      console.log(loggedUser);
-      updateUserProfile(data.name, data.photoURL).then(() => {
-        // create user entry in the database
-        const userInfo = {
-          name: data.name,
-          email: data.email,
-        };
-        axionPublic.post("/users", userInfo).then((res) => {
-          if (res.data.insertedId) {
-            reset();
-            Swal.fire({
-              position: "top-center",
-              icon: "success",
-              title: "Your successfully logged in",
-              showConfirmButton: false,
-              timer: 1500,
-            });
-          }
+    const imageFile = { image: data.image[0] };
+    const logoFile = { image: data.logo[0] };
+    const res = await axios.post(image_hosting_api, imageFile, {
+      headers: {
+        "content-type": "multipart/form-data",
+      },
+    });
+    const logo = await axios.post(image_hosting_api, logoFile, {
+      headers: {
+        "content-type": "multipart/form-data",
+      },
+    });
+    console.log(res.data.data);
+    console.log(logo.data.data);
+    const uImg = res.data.data.display_url;
+    const company_logo = logo.data.data.display_url;
+    if (res.data.success) {
+      createUser(data.email, data.password).then((res) => {
+        const loggedUser = res.user;
+        console.log(loggedUser);
+        updateUserProfile(data.name, uImg).then(() => {
+          //   create user entry in the database
+          const userInfo = {
+            name: data.name,
+            email: data.email,
+            birth_date: data.date,
+            company_name: data.company_name,
+            company_logo: company_logo,
+            role: "hrManager",
+          };
+          axiosPublic.post("/users", userInfo).then((res) => {
+            if (res.data.insertedId) {
+              reset();
+              Swal.fire({
+                position: "top-center",
+                icon: "success",
+                title: "Your successfully logged in",
+                showConfirmButton: false,
+                timer: 1500,
+              });
+            }
+          });
         });
       });
-    });
+    }
   };
   return (
     <div className="w-2/4 mx-auto">
@@ -53,32 +79,35 @@ const JoinAsHrManager = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="card-body">
           <div className="form-control">
             <label className="label">
-              <span className="label-text">Name</span>
+              <span className="label-text">Full Name</span>
             </label>
             <input
               {...register("name", { required: true })}
               name="name"
               type="text"
-              placeholder="Enter your name"
+              placeholder="Enter your full name"
               className="input input-bordered"
             />
             {errors.name && (
-              <span className="text-red-500 mt-1">Name is required</span>
+              <span className="text-red-500 mt-1">Full Name is required</span>
             )}
           </div>
+          {/* company name */}
           <div className="form-control">
             <label className="label">
-              <span className="label-text">Photo URL</span>
+              <span className="label-text">Company Name</span>
             </label>
             <input
-              {...register("photoURL", { required: true })}
-              name="photoURL"
+              {...register("company_name", { required: true })}
+              name="company_name"
               type="text"
-              placeholder="Enter your photo url"
+              placeholder="Enter your company name"
               className="input input-bordered"
             />
-            {errors.photoURL && (
-              <span className="text-red-500 mt-1">Photo URL is required</span>
+            {errors.company_name && (
+              <span className="text-red-500 mt-1">
+                company name is required
+              </span>
             )}
           </div>
           <div className="form-control">
@@ -96,6 +125,53 @@ const JoinAsHrManager = () => {
               <span className="text-red-500 mt-1">Email is required</span>
             )}
           </div>
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text">Date Of Birth</span>
+            </label>
+            <input
+              {...register("date", { required: true })}
+              name="date"
+              type="date"
+              className="input input-bordered"
+            />
+            {errors.date && (
+              <span className="text-red-500 mt-1">
+                Date of Birth is required
+              </span>
+            )}
+          </div>
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text">Profile Photo</span>
+            </label>
+
+            <input
+              {...register("image", { required: true })}
+              name="image"
+              type="file"
+              className="file-input  file-input-xs w-full max-w-xs"
+            />
+            {errors.photo && (
+              <span className="text-red-500 mt-1 ">Photo is required</span>
+            )}
+          </div>
+          <div className="form-control">
+            <label className="label">
+              <span className="label-text">Company Logo</span>
+            </label>
+
+            <input
+              {...register("logo", { required: true })}
+              name="logo"
+              type="file"
+              className="file-input  file-input-xs w-full max-w-xs"
+            />
+            {errors.logo && (
+              <span className="text-red-500 mt-1 ">Photo is required</span>
+            )}
+          </div>
+
           <div className="flex items-center justify-end">
             <div className="form-control w-full relative">
               <label className="label">
