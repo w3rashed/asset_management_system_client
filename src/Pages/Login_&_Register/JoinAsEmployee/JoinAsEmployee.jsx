@@ -7,6 +7,8 @@ import useAuth from "@/Hooks/useAuth";
 import React, { useState } from "react";
 import useAxionPublic from "../../../Hooks/useAxiosPublic";
 import axios from "axios";
+import { useQuery } from "@tanstack/react-query";
+import { useNavigate } from "react-router-dom";
 
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
@@ -15,7 +17,8 @@ const JoinAsEmployee = () => {
   const [showForm, setShowForm] = React.useState(false);
   const axiosPublic = useAxionPublic();
   const [showPassword, setShowPassword] = useState(false);
-  const { createUser, updateUserProfile } = useAuth();
+  const { createUser, updateUserProfile, user } = useAuth();
+  const navigate = useNavigate();
   //   console.log(user);
   const {
     register,
@@ -24,6 +27,15 @@ const JoinAsEmployee = () => {
     reset,
     formState: { errors },
   } = useForm();
+  const { data: item = {}, refetch } = useQuery({
+    queryKey: ["users", user?.email],
+    queryFn: async () => {
+      const res = await axiosPublic.get(`/users/${user?.email}`);
+      return res.data;
+    },
+    enabled: false,
+  });
+  console.log(item);
 
   const onSubmit = async (data) => {
     console.log(data);
@@ -58,6 +70,8 @@ const JoinAsEmployee = () => {
                 timer: 1500,
               });
             }
+            navigate("/");
+            refetch();
           });
         });
       });

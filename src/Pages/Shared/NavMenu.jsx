@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { Button } from "@/components/ui/button";
 import useAuth from "@/Hooks/useAuth";
-import React from "react";
+import React, { useEffect } from "react";
 import LoginModal from "./LoginModal/LoginModal";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
@@ -12,22 +12,32 @@ const NavMenu = () => {
   const axiosPublic = useAxiosPublic();
   const [showForm, setShowForm] = React.useState(false);
   const [showInfo, setShowInfo] = React.useState(false);
+
   console.log(user?.email);
 
-  const { data: item = {} } = useQuery({
+  const { data: item = {}, refetch } = useQuery({
     queryKey: ["users", user?.email],
     queryFn: async () => {
       const res = await axiosPublic.get(`/users/${user?.email}`);
       return res.data;
     },
+    enabled: false,
   });
   console.log(item);
 
   const handleLogOut = () => {
     logOut();
   };
-  const userRole = item.role;
-  const role = userRole;
+
+  useEffect(() => {
+    if (user) {
+      refetch();
+    }
+  }, [user, refetch]);
+
+  const role = item?.role;
+
+  console.log(user);
 
   const menuLinks = (
     <>

@@ -4,9 +4,11 @@ import SocialLogin from "../SocialLogin";
 import LoginModal from "@/Pages/Shared/LoginModal/LoginModal";
 import { useForm } from "react-hook-form";
 import useAuth from "@/Hooks/useAuth";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import useAxionPublic from "../../../Hooks/useAxiosPublic";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
@@ -15,7 +17,8 @@ const JoinAsHrManager = () => {
   const [showForm, setShowForm] = React.useState(false);
   const axiosPublic = useAxionPublic();
   const [showPassword, setShowPassword] = useState(false);
-  const { createUser, updateUserProfile } = useAuth();
+  const { createUser, updateUserProfile, user } = useAuth();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -24,6 +27,16 @@ const JoinAsHrManager = () => {
     reset,
     formState: { errors },
   } = useForm();
+
+  const { data: item = {}, refetch } = useQuery({
+    queryKey: ["users", user?.email],
+    queryFn: async () => {
+      const res = await axiosPublic.get(`/users/${user?.email}`);
+      return res.data;
+    },
+    enabled: false,
+  });
+  console.log(item);
 
   const onSubmit = async (data) => {
     console.log(data);
@@ -49,6 +62,7 @@ const JoinAsHrManager = () => {
         console.log(loggedUser);
         updateUserProfile(data.name, uImg).then(() => {
           //   create user entry in the database
+
           const userInfo = {
             name: data.name,
             email: data.email,
@@ -68,11 +82,16 @@ const JoinAsHrManager = () => {
                 timer: 1500,
               });
             }
+            navigate("/");
+            refetch();
           });
         });
       });
     }
   };
+
+  useEffect(() => {}, []);
+
   return (
     <div className="w-2/4 mx-auto">
       <div className="card  w-full md:w-3/4 shadow-2xl bg-base-100 mx-auto">
