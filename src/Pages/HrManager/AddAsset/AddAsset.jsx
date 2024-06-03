@@ -1,11 +1,14 @@
 import useAuth from "@/Hooks/useAuth";
+import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import SectionTitle from "@/components/SectionTitle/SectionTitle";
 import { Button } from "@/components/ui/button";
 import { TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
+import Swal from "sweetalert2";
 
 const AddAsset = () => {
   const { user } = useAuth();
+  const axiosPublic = useAxiosPublic();
   const {
     register,
     handleSubmit,
@@ -14,6 +17,24 @@ const AddAsset = () => {
   } = useForm();
   const onSubmit = (data) => {
     console.log(data);
+    const item = {
+      product_name: data.product_name,
+      product_type: data.product_type,
+      product_quantity: data.product_quantity,
+      email: user.email,
+    };
+    axiosPublic.post("/asstes", item).then((res) => {
+      console.log(res.data);
+      if (res.data.insertedId) {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: `${data.product_name} added successfully`,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
+    });
   };
   return (
     <div className="">
