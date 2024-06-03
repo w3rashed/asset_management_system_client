@@ -1,4 +1,5 @@
 import Home from "@/Pages/Home/Home";
+import AddAsset from "@/Pages/HrManager/AddAsset/AddAsset";
 import JoinAsEmployee from "@/Pages/Login_&_Register/JoinAsEmployee/JoinAsEmployee";
 import JoinAsHrManager from "@/Pages/Login_&_Register/JoinAsHrManager/JoinAsHrManager";
 import Login from "@/Pages/Login_&_Register/Login";
@@ -15,21 +16,20 @@ export const Routes = createBrowserRouter([
         path: "/",
         element: <Home></Home>,
       },
-      {
-        path: "/login",
-        element: <Login></Login>,
-      },
-      {
-        path: "/register",
-        element: <Register></Register>,
-      },
+      // employe route
       {
         path: "/join_employee",
         element: <JoinAsEmployee></JoinAsEmployee>,
       },
+
+      // hr route
       {
         path: "/join_hr_manager",
         element: <JoinAsHrManager></JoinAsHrManager>,
+      },
+      {
+        path: "/add_asset",
+        element: <AddAsset></AddAsset>,
       },
     ],
   },
