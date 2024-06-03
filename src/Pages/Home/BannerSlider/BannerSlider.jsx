@@ -13,7 +13,7 @@ const BannerSlider = () => {
     <Swiper
       pagination={true}
       modules={[Pagination]}
-      className="mySwiper w-full"
+      className="mySwiper w-full h-[50vh]"
     >
       <SwiperSlide>
         <img src="https://i.ibb.co/vd4rBnr/bg.jpg" alt="" className="w-full" />

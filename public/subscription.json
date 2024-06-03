@@ -1,0 +1,20 @@
+[
+    {
+      
+      "package": "Standard",
+      "price": 5,
+      "members": 5
+    },
+    {
+      
+      "package": "Premium",
+      "price": 8,
+      "members": 10
+    },
+    {
+      
+      "package": "Enterprise",
+      "price": 15,
+      "members": 20
+    }
+  ]
