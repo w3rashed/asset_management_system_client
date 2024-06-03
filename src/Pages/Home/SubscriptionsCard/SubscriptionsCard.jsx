@@ -3,9 +3,17 @@ import { Button } from "@/components/ui/button";
 import { useQuery } from "@tanstack/react-query";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import useAxionPublic from "../../../Hooks/useAxiosPublic";
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+import useAuth from "@/Hooks/useAuth";
+import CheckOutForm from "@/components/CheckoutForm/CheckoutForm";
+
+// payment key
+const stripePromise = loadStripe("pk_test_6pRNASCoBOKtIshFeQd4XMUh");
 
 const SubscriptionsCard = () => {
   const axiosPublic = useAxionPublic();
+  const { setPayment } = useAuth();
 
   const { data: items = [] } = useQuery({
     queryKey: ["subscription"],
@@ -17,7 +25,7 @@ const SubscriptionsCard = () => {
   // console.log("hiiiiiiiiiiiii", item);
 
   const handlePurchase = (item) => {
-    console.log("rrrrrrrr", item.price);
+    setPayment(item);
   };
 
   return (
@@ -42,14 +50,56 @@ const SubscriptionsCard = () => {
                 <span> Assets Manage : Full</span>
               </h4>
               <Button
-                onClick={() => handlePurchase(item)}
+                onClick={() => {
+                  document.getElementById("my_modal_5").showModal();
+                  handlePurchase(item);
+                }}
                 className="bg-green-600"
               >
                 Purchase
               </Button>
+              <Button
+                className="btn mt-10 bg-[#2ECC71] text-white hover:text-[#2ECC71] hover:bg-transparent hover:border-[#2ECC71] duration-500"
+                onClick={() =>
+                  document.getElementById("my_modal_5").showModal()
+                }
+              >
+                Be a Volunteer
+              </Button>
             </div>
           </div>
         ))}
+      </div>
+      <div>
+        {/* Open the modal using document.getElementById('ID').showModal() method */}
+
+        <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle ">
+          <div className="modal-box ">
+            <form>
+              <Elements stripe={stripePromise}>
+                <CheckOutForm />
+              </Elements>
+
+              <div className="modal-action">
+                <button
+                  className="px-8 py-2.5 w-full mt-5 leading-5 border rounded-md   bg-[#2ECC71] text-white hover:text-[#2ECC71] hover:bg-transparent hover:border-[#2ECC71] duration-500"
+                  onClick={() => {
+                    const modal = document.getElementById("my_modal_5");
+                    modal.close();
+                  }}
+                >
+                  Confirm
+                </button>
+              </div>
+            </form>
+            <div className="modal-action flex justify-center w-full">
+              <form method="dialog" className="w-full">
+                {/* if there is a button in form, it will close the modal */}
+                <button className="btn w-full">Close</button>
+              </form>
+            </div>
+          </div>
+        </dialog>
       </div>
     </div>
   );

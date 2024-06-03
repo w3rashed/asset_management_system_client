@@ -257,6 +257,40 @@ const JoinAsHrManager = () => {
         </p>
         <SocialLogin></SocialLogin>
       </div>
+      {/* -------------------- */}
+      <div>
+        <button
+          className="btn mt-10 bg-[#2ECC71] text-white hover:text-[#2ECC71] hover:bg-transparent hover:border-[#2ECC71] duration-500"
+          onClick={() => document.getElementById("my_modal_5").showModal()}
+        >
+          Be a Volunteer
+        </button>
+        {/* Open the modal using document.getElementById('ID').showModal() method */}
+
+        <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle ">
+          <div className="modal-box ">
+            <form>
+              <div className="modal-action">
+                <button
+                  className="px-8 py-2.5 w-full mt-5 leading-5 border rounded-md   bg-[#2ECC71] text-white hover:text-[#2ECC71] hover:bg-transparent hover:border-[#2ECC71] duration-500"
+                  onClick={() => {
+                    const modal = document.getElementById("my_modal_5");
+                    modal.close();
+                  }}
+                >
+                  Confirm
+                </button>
+              </div>
+            </form>
+            <div className="modal-action flex justify-center w-full">
+              <form method="dialog" className="w-full">
+                {/* if there is a button in form, it will close the modal */}
+                <button className="btn w-full">Close</button>
+              </form>
+            </div>
+          </div>
+        </dialog>
+      </div>
     </div>
   );
 };

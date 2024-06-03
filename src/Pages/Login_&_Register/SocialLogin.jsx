@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 
 const SocialLogin = () => {
   const { googleLogin } = useAuth();
-  const axiosPublic = useAxiosPublic();
+
   const navigate = useNavigate();
 
   const handleGoogleLogin = () => {
@@ -32,7 +32,7 @@ const SocialLogin = () => {
     });
   };
   return (
-    <div>
+    <div className="mb-7">
       <div className="divider">OR</div>
       <div className="flex justify-center">
         <Button onClick={handleGoogleLogin} className="flex gap-2">
