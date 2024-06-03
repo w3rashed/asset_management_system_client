@@ -9,7 +9,7 @@ import useAuth from "@/Hooks/useAuth";
 import CheckOutForm from "@/components/CheckoutForm/CheckoutForm";
 
 // payment key
-const stripePromise = loadStripe("pk_test_6pRNASCoBOKtIshFeQd4XMUh");
+const stripePromise = loadStripe(import.meta.env.VITE_PAYMENT_GATEWAY_PK);
 
 const SubscriptionsCard = () => {
   const axiosPublic = useAxionPublic();
@@ -75,11 +75,10 @@ const SubscriptionsCard = () => {
 
         <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle ">
           <div className="modal-box ">
+            <Elements stripe={stripePromise}>
+              <CheckOutForm />
+            </Elements>
             <form>
-              <Elements stripe={stripePromise}>
-                <CheckOutForm />
-              </Elements>
-
               <div className="modal-action">
                 <button
                   className="px-8 py-2.5 w-full mt-5 leading-5 border rounded-md   bg-[#2ECC71] text-white hover:text-[#2ECC71] hover:bg-transparent hover:border-[#2ECC71] duration-500"
