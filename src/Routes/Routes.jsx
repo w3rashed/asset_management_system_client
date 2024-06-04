@@ -4,6 +4,7 @@ import JoinAsEmployee from "@/Pages/Login_&_Register/JoinAsEmployee/JoinAsEmploy
 import JoinAsHrManager from "@/Pages/Login_&_Register/JoinAsHrManager/JoinAsHrManager";
 import Login from "@/Pages/Login_&_Register/Login";
 import Register from "@/Pages/Login_&_Register/Register";
+import MyProfile from "@/Pages/MyProfile/MyProfile";
 import Root from "@/Root/Root";
 import { createBrowserRouter } from "react-router-dom";
 
@@ -15,6 +16,10 @@ export const Routes = createBrowserRouter([
       {
         path: "/",
         element: <Home></Home>,
+      },
+      {
+        path: "/porfile",
+        element: <MyProfile></MyProfile>,
       },
       // employe route
       {

@@ -25,15 +25,15 @@ const NavMenu = () => {
   });
   console.log(item);
 
-  const handleLogOut = () => {
-    logOut();
-  };
-
   useEffect(() => {
     if (user) {
       refetch();
     }
   }, [user, refetch]);
+
+  const handleLogOut = () => {
+    logOut();
+  };
 
   const role = item?.role;
 
@@ -156,7 +156,7 @@ const NavMenu = () => {
                   viewTransitionName: isTransitioning ? "slide" : "",
                 };
               }}
-              to="/profile"
+              to="/porfile"
             >
               Profile
             </NavLink>
@@ -273,7 +273,7 @@ const NavMenu = () => {
                   viewTransitionName: isTransitioning ? "slide" : "",
                 };
               }}
-              to="/hr_profile"
+              to="/porfile"
             >
               Profile
             </NavLink>

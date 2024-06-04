@@ -34,7 +34,7 @@ const JoinAsHrManager = () => {
       const res = await axiosPublic.get(`/users/${user?.email}`);
       return res.data;
     },
-    enabled: false,
+    // enabled: false,
   });
   console.log(item);
 
@@ -71,7 +71,7 @@ const JoinAsHrManager = () => {
             company_logo: company_logo,
             role: "hrManager",
           };
-          axiosPublic.post("/users", userInfo).then((res) => {
+          axiosPublic.patch("/users", userInfo).then((res) => {
             if (res.data.insertedId) {
               reset();
               Swal.fire({
