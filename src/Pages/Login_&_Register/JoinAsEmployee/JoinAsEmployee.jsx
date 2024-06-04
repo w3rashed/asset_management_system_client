@@ -59,7 +59,7 @@ const JoinAsEmployee = () => {
             birth_date: data.date,
             role: "employee",
           };
-          axiosPublic.post("/users", userInfo).then((res) => {
+          axiosPublic.patch("/users", userInfo).then((res) => {
             if (res.data.insertedId) {
               reset();
               Swal.fire({
