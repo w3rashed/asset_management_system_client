@@ -16,9 +16,9 @@ const SubscriptionsCard = () => {
   const { setPayment } = useAuth();
 
   const { data: items = [] } = useQuery({
-    queryKey: ["subscription"],
+    queryKey: ["subscribe_card"],
     queryFn: async () => {
-      const res = await axiosPublic.get(`/subscriptions`);
+      const res = await axiosPublic.get(`/subscribe_card`);
       return res.data;
     },
   });
@@ -31,6 +31,7 @@ const SubscriptionsCard = () => {
   return (
     <div className="mb-10">
       <SectionTitle heading="explore our subscriptions"></SectionTitle>
+
       <div className="grid md:grid-cols-3">
         {items.map((item) => (
           <div key={item._id} className="card w-96 bg-base-100 shadow-xl">

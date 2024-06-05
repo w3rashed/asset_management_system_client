@@ -15,6 +15,7 @@ const CheckOutForm = () => {
   const { user, payment } = useAuth();
 
   const price = payment?.price;
+  console.log(payment, "paymentssssssssssssssss");
 
   useEffect(() => {
     if (price > 0) {
@@ -103,6 +104,15 @@ const CheckOutForm = () => {
             console.error("Error saving payment:", error);
             setError("Failed to save payment");
           });
+
+        // add subschiptions info
+        const subsInfo = {
+          email: user.email,
+          member: payment.members,
+        };
+        axiosPublic.patch("/subscriptions", subsInfo).then((res) => {
+          console.log(res.data, "subscriptions");
+        });
       }
     } catch (error) {
       console.error("Unhandled error:", error);

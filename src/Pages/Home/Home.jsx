@@ -8,7 +8,7 @@ const Home = () => {
       <Helmet>
         <title>Asset Nex | Home</title>
       </Helmet>
-      <BannerSlider></BannerSlider>
+      {/* <BannerSlider></BannerSlider> */}
       <SubscriptionsCard></SubscriptionsCard>
     </div>
   );
