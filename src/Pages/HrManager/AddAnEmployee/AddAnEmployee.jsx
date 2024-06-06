@@ -1,3 +1,4 @@
+import useAddLimit from "@/Hooks/useAddLimit";
 import useAllEmployee from "@/Hooks/useAllEmployee";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import useUsers from "@/Hooks/useUsers";
@@ -8,9 +9,11 @@ import Swal from "sweetalert2";
 
 const AddAnEmployee = () => {
   const [allEmployee, refetch] = useAllEmployee();
+  const [AddLimit] = useAddLimit();
   const axiosPublic = useAxiosPublic();
   const [data] = useUsers();
   console.log(allEmployee, "all employee");
+  console.log(AddLimit, "add limit aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 
   const handleAdd = (employee) => {
     console.log(employee, "handle add");
@@ -21,21 +24,25 @@ const AddAnEmployee = () => {
     };
     console.log(teamInfo, "team info");
     Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
+      title: `Are you sure? Add: ${employee.name}`,
+
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: "Confirm",
     }).then((result) => {
       if (result.isConfirmed) {
         axiosPublic.post("/my_employee", teamInfo).then((res) => {
           console.log(res.data);
+          axiosPublic.delete(`/users/${employee.email}`).then((res) => {
+            console.log(res.data);
+            refetch();
+          });
           if (res.data.insertedId) {
             Swal.fire({
               title: "Deleted!",
-              text: "Your file has been deleted.",
+              text: `Successfully added: ${employee.name}`,
               icon: "success",
             });
           }
@@ -46,6 +53,10 @@ const AddAnEmployee = () => {
   return (
     <div>
       <SectionTitle heading="Add employee"></SectionTitle>
+      <h3 className="my-4">
+        <span className="font-medium">Your Limit:</span>{" "}
+        <span className="border-2 py-1 px-3 rounded-xl">{AddLimit.member}</span>
+      </h3>
       <div className="overflow-x-auto">
         <table className="table">
           {/* head */}

@@ -35,6 +35,7 @@ export const Routes = createBrowserRouter([
         path: "/add_asset",
         element: <AddAsset></AddAsset>,
       },
+      {},
       {
         path: "/add_employee",
         element: <AddAnEmployee></AddAnEmployee>,
