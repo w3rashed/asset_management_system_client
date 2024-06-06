@@ -21,6 +21,9 @@ const AddAnEmployee = () => {
       hrEmail: data.email,
       company_logo: data.company_logo,
       employee_email: employee.email,
+      elployee_name: employee.name,
+      employee_img: employee.image,
+      role: "employee",
     };
     console.log(teamInfo, "team info");
     Swal.fire({
@@ -41,7 +44,7 @@ const AddAnEmployee = () => {
           });
           if (res.data.insertedId) {
             Swal.fire({
-              title: "Deleted!",
+              title: "Added",
               text: `Successfully added: ${employee.name}`,
               icon: "success",
             });
@@ -85,7 +88,7 @@ const AddAnEmployee = () => {
                 </th>
                 <th>{idx + 1}</th>
                 <td>
-                  <img src={employee?.image} alt="" />
+                  <img src={employee?.image} className="size-14 rounded-full" />
                 </td>
                 <td className="uppercase">{employee.name}</td>
                 <td className="uppercase">{employee.role}</td>
