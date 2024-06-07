@@ -23,6 +23,7 @@ const AddAnEmployee = () => {
       employee_email: employee.email,
       elployee_name: employee.name,
       employee_img: employee.image,
+      employee_birth_of_date: employee.birth_date,
       role: "employee",
     };
     console.log(teamInfo, "team info");

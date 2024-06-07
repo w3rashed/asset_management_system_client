@@ -55,8 +55,8 @@ const JoinAsEmployee = () => {
           //   create user entry in the database
           const userInfo = {
             name: data.name,
-            image: uImg,
             email: data.email,
+            image: uImg,
             birth_date: data.date,
             role: "employee",
           };

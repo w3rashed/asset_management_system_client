@@ -1,12 +1,42 @@
+import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import useMyEmployeeList from "@/Hooks/useMyEmployeeList";
 import SectionTitle from "@/components/SectionTitle/SectionTitle";
 import { Button } from "@/components/ui/button";
+import Swal from "sweetalert2";
 
 const MyEmployeeList = () => {
-  const [myEmployeeList] = useMyEmployeeList();
+  const [myEmployeeList, refetch] = useMyEmployeeList();
+  const axiosPublic = useAxiosPublic();
   console.log(myEmployeeList);
 
-  const handleRemove = () => {};
+  const handleRemove = (employee) => {
+    const employee_email = employee.employee_email;
+    const userInfo = {
+      name: employee.elployee_name,
+      email: employee.employee_email,
+      image: employee.employee_img,
+      birth_date: employee.employee_birth_of_date,
+      role: "employee",
+    };
+    axiosPublic.delete(`/my_employee/${employee_email}`).then((res) => {
+      if (res.data.deletedCount > 0) {
+        axiosPublic.patch("/users", userInfo).then((res) => {
+          console.log(res.data);
+          if (res.data.result.insertedId) {
+            Swal.fire({
+              position: "top-center",
+              icon: "success",
+              title: "Your successfully remove the employe",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }
+        });
+        refetch();
+      }
+    });
+    console.log(employee);
+  };
   return (
     <div>
       <SectionTitle heading="my employees"></SectionTitle>
