@@ -59,6 +59,7 @@ const JoinAsEmployee = () => {
             image: uImg,
             birth_date: data.date,
             role: "employee",
+            affiliate: "false",
           };
           axiosPublic.patch("/users", userInfo).then((res) => {
             if (res.data.insertedId) {

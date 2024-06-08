@@ -2,16 +2,16 @@ import useAddLimit from "@/Hooks/useAddLimit";
 import useAllEmployee from "@/Hooks/useAllEmployee";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import useUsers from "@/Hooks/useUsers";
-
 import SectionTitle from "@/components/SectionTitle/SectionTitle";
 import { Button } from "@/components/ui/button";
 import Swal from "sweetalert2";
 
 const AddAnEmployee = () => {
   const [allEmployee, refetch] = useAllEmployee();
-  const [AddLimit] = useAddLimit();
+  const [AddLimit, refetchLimit = refetch] = useAddLimit();
   const axiosPublic = useAxiosPublic();
   const [data] = useUsers();
+
   console.log(allEmployee, "all employee");
   console.log(AddLimit, "add limit aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
 
@@ -26,6 +26,7 @@ const AddAnEmployee = () => {
       employee_birth_of_date: employee.birth_date,
       role: "employee",
     };
+
     console.log(teamInfo, "team info");
     Swal.fire({
       title: `Are you sure? Add: ${employee.name}`,
@@ -38,17 +39,24 @@ const AddAnEmployee = () => {
     }).then((result) => {
       if (result.isConfirmed) {
         axiosPublic.post("/my_employee", teamInfo).then((res) => {
-          console.log(res.data);
-          axiosPublic.delete(`/users/${employee.email}`).then((res) => {
-            console.log(res.data);
-            refetch();
-          });
-          if (res.data.insertedId) {
-            Swal.fire({
-              title: "Added",
-              text: `Successfully added: ${employee.name}`,
-              icon: "success",
-            });
+          console.log(res.data.result2);
+          if (res.data.result2.insertedId) {
+            axiosPublic
+              .post(`/users/${employee.email}?status=${"true"}`)
+              .then((res) => {
+                console.log(res.data);
+                if (res.data.modifiedCount > 0) {
+                  Swal.fire({
+                    position: "top-center",
+                    icon: "success",
+                    title: `Successfully added: ${employee.name}`,
+                    showConfirmButton: false,
+                    timer: 1500,
+                  });
+                  refetch();
+                  refetchLimit();
+                }
+              });
           }
         });
       }
@@ -94,9 +102,15 @@ const AddAnEmployee = () => {
                 <td className="uppercase">{employee.name}</td>
                 <td className="uppercase">{employee.role}</td>
                 <td className="uppercase">{employee.birth_date}</td>
-                <th onClick={() => handleAdd(employee)}>
-                  <Button>Add</Button>
-                </th>
+                {employee.affiliate == "true" ? (
+                  <th>
+                    <Button disabled>Add </Button>
+                  </th>
+                ) : (
+                  <th onClick={() => handleAdd(employee)}>
+                    <Button>Add</Button>
+                  </th>
+                )}
               </tr>
             ))}
           </tbody>
