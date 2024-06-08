@@ -2,13 +2,11 @@ import useAuth from "@/Hooks/useAuth";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import SectionTitle from "@/components/SectionTitle/SectionTitle";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { TextField, Select, MenuItem } from "@mui/material";
+import { TextField } from "@mui/material";
 import { useState } from "react";
-
 import Swal from "sweetalert2";
 
-const AddAsset = () => {
+const UpdateAsset = () => {
   const { user } = useAuth();
   const axiosPublic = useAxiosPublic();
   const [type, setType] = useState();
@@ -47,10 +45,9 @@ const AddAsset = () => {
       }
     });
   };
-
   return (
     <div className="">
-      <SectionTitle heading="Add an asset"></SectionTitle>
+      <SectionTitle heading="update an asset"></SectionTitle>
       <form onSubmit={onSubmit} action="">
         <div className="grid w-2/4 mx-auto gap-2">
           <select
@@ -104,4 +101,4 @@ const AddAsset = () => {
   );
 };
 
-export default AddAsset;
+export default UpdateAsset;
