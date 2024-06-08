@@ -1,6 +1,7 @@
 import Home from "@/Pages/Home/Home";
 import AddAnEmployee from "@/Pages/HrManager/AddAnEmployee/AddAnEmployee";
 import AddAsset from "@/Pages/HrManager/AddAsset/AddAsset";
+import AssetsList from "@/Pages/HrManager/AssetsList/AssetsList";
 import MyEmployeeList from "@/Pages/HrManager/MyEmployeeList/MyEmployeeList";
 import JoinAsEmployee from "@/Pages/Login_&_Register/JoinAsEmployee/JoinAsEmployee";
 import JoinAsHrManager from "@/Pages/Login_&_Register/JoinAsHrManager/JoinAsHrManager";
@@ -31,6 +32,10 @@ export const Routes = createBrowserRouter([
       {
         path: "/join_hr_manager",
         element: <JoinAsHrManager></JoinAsHrManager>,
+      },
+      {
+        path: "/asset_list",
+        element: <AssetsList></AssetsList>,
       },
       {
         path: "/add_asset",

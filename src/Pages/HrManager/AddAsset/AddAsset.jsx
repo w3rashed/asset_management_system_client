@@ -3,27 +3,37 @@ import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import SectionTitle from "@/components/SectionTitle/SectionTitle";
 import { Button } from "@/components/ui/button";
 import { TextField } from "@mui/material";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 
 const AddAsset = () => {
   const { user } = useAuth();
   const axiosPublic = useAxiosPublic();
+  const [type, setType] = useState();
+  const handeleType = (e) => {
+    setType(e.target.value);
+  };
   const {
     register,
     handleSubmit,
     reset,
     formState: { errors },
   } = useForm();
+
   const onSubmit = (data) => {
     console.log(data);
+    const currentDate = new Date();
     const item = {
       product_name: data.product_name,
-      product_type: data.product_type,
+      product_type: type,
       product_quantity: data.product_quantity,
       email: user.email,
+      date_added: currentDate.toISOString(),
     };
-    axiosPublic.post("/asstes", item).then((res) => {
+    console.log(item);
+    console.log(errors);
+    axiosPublic.post("/assets", item).then((res) => {
       console.log(res.data);
       if (res.data.insertedId) {
         Swal.fire({
@@ -36,6 +46,7 @@ const AddAsset = () => {
       }
     });
   };
+
   return (
     <div className="">
       <SectionTitle heading="Add an asset"></SectionTitle>
@@ -49,14 +60,7 @@ const AddAsset = () => {
             variant="standard"
             className=""
           />
-          <TextField
-            {...register("product_type", { required: true })}
-            name="product_type"
-            id="standard-basic"
-            label="Product Type *"
-            variant="standard"
-            className=""
-          />
+
           <TextField
             {...register("product_quantity", { required: true })}
             name="product_quantity"
@@ -66,7 +70,27 @@ const AddAsset = () => {
             type="number"
             className=""
           />
-          <Button className="mt-3">Add</Button>
+
+          <select
+            className="focus:outline-none"
+            name="product_Type"
+            onChange={handeleType}
+            required
+          >
+            <option value="" disabled selected>
+              Select One
+            </option>
+            <option value="refundable">Refundable</option>
+            <option value="non_refundable">Non Refundable</option>
+          </select>
+
+          <Button
+            onClick={() => console.log("fffffffffffffff")}
+            type="submit"
+            className="mt-3"
+          >
+            Add
+          </Button>
         </div>
       </form>
     </div>
