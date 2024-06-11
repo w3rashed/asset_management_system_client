@@ -2,6 +2,7 @@ import Request_for_asset from "@/Pages/Employee/Request_for_asset/Request_for_as
 import Home from "@/Pages/Home/Home";
 import AddAnEmployee from "@/Pages/HrManager/AddAnEmployee/AddAnEmployee";
 import AddAsset from "@/Pages/HrManager/AddAsset/AddAsset";
+import AllRequest from "@/Pages/HrManager/AllRequest/AllRequest";
 import AssetsList from "@/Pages/HrManager/AssetsList/AssetsList";
 import MyEmployeeList from "@/Pages/HrManager/MyEmployeeList/MyEmployeeList";
 import UpdateAsset from "@/Pages/HrManager/UpdateAsset/UpdateAsset";
@@ -50,6 +51,10 @@ export const Routes = createBrowserRouter([
       {
         path: "/add_asset",
         element: <AddAsset></AddAsset>,
+      },
+      {
+        path: "/all_requests",
+        element: <AllRequest></AllRequest>,
       },
       {
         path: "/my_employee_list",

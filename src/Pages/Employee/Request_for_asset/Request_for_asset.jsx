@@ -21,7 +21,7 @@ const Request_for_asset = () => {
       hr_email: asset.email,
       employee_email: userData?.email,
       employee_name: userData?.name,
-      data: currentDate.toISOString(),
+      date: currentDate.toISOString(),
       status: "pending",
     };
     console.log(assetInfo);

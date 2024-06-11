@@ -82,8 +82,8 @@ const AddAsset = () => {
             <option value="" disabled selected>
               Select One
             </option>
-            <option value="refundable">Refundable</option>
-            <option value="non_refundable">Non Refundable</option>
+            <option value="refundable">returnable</option>
+            <option value="non_refundable">Non returnable</option>
           </select>
           <TextField
             name="product_quantity"
