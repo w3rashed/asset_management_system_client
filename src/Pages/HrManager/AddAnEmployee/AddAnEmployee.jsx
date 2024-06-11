@@ -4,6 +4,7 @@ import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import useUsers from "@/Hooks/useUsers";
 import SectionTitle from "@/components/SectionTitle/SectionTitle";
 import { Button } from "@/components/ui/button";
+import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 const AddAnEmployee = () => {
@@ -11,9 +12,9 @@ const AddAnEmployee = () => {
   const [AddLimit, refetchLimit = refetch] = useAddLimit();
   const axiosPublic = useAxiosPublic();
   const [data] = useUsers();
+  const navigate = useNavigate();
 
-  console.log(allEmployee, "all employee");
-  console.log(AddLimit, "add limit aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+  // console.log(allEmployee, "all employee");
 
   const handleAdd = (employee) => {
     console.log(employee, "handle add");
@@ -27,23 +28,32 @@ const AddAnEmployee = () => {
       role: "employee",
     };
 
-    console.log(teamInfo, "team info");
-    Swal.fire({
-      title: `Are you sure? Add: ${employee.name}`,
+    const userInfo = {
+      email: employee.email,
+      affiliate: "true",
+      hr_email: data.email,
+      company_logo: data.company_logo,
+    };
 
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Confirm",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        axiosPublic.post("/my_employee", teamInfo).then((res) => {
-          console.log(res.data.result2);
-          if (res.data.result2.insertedId) {
-            axiosPublic
-              .post(`/users/${employee.email}?status=${"true"}`)
-              .then((res) => {
+    console.log(teamInfo, "team info");
+    if (AddLimit.member <= 0) {
+      console.log(AddLimit, "add limit aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+      navigate("/");
+    } else {
+      Swal.fire({
+        title: `Are you sure? Add: ${employee.name}`,
+
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Confirm",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          axiosPublic.post("/my_employee", teamInfo).then((res) => {
+            console.log(res.data.result2);
+            if (res.data.result2.insertedId) {
+              axiosPublic.post(`/users`, userInfo).then((res) => {
                 console.log(res.data);
                 if (res.data.modifiedCount > 0) {
                   Swal.fire({
@@ -57,10 +67,11 @@ const AddAnEmployee = () => {
                   refetchLimit();
                 }
               });
-          }
-        });
-      }
-    });
+            }
+          });
+        }
+      });
+    }
   };
   return (
     <div>

@@ -1,3 +1,4 @@
+import Request_for_asset from "@/Pages/Employee/Request_for_asset/Request_for_asset";
 import Home from "@/Pages/Home/Home";
 import AddAnEmployee from "@/Pages/HrManager/AddAnEmployee/AddAnEmployee";
 import AddAsset from "@/Pages/HrManager/AddAsset/AddAsset";
@@ -27,6 +28,10 @@ export const Routes = createBrowserRouter([
       {
         path: "/join_employee",
         element: <JoinAsEmployee></JoinAsEmployee>,
+      },
+      {
+        path: "/request_for_assets",
+        element: <Request_for_asset></Request_for_asset>,
       },
 
       // hr route

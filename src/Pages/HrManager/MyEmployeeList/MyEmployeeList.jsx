@@ -14,6 +14,10 @@ const MyEmployeeList = () => {
 
   const handleRemove = (employee) => {
     const employee_email = employee.employee_email;
+    const userInfo = {
+      email: employee.employee_email,
+      affiliate: "false",
+    };
     if (!hrEmail) {
       return alert("email not found");
     }
@@ -23,20 +27,18 @@ const MyEmployeeList = () => {
         console.log(res.data);
         if (res.data.result2.deletedCount > 0) {
           refetch();
-          axiosPublic
-            .post(`/users/${employee_email}?status=${"false"}`)
-            .then((res) => {
-              console.log(res.data);
-              if (res.data.modifiedCount > 0) {
-                Swal.fire({
-                  position: "top-center",
-                  icon: "success",
-                  title: "Your successfully remove the employe",
-                  showConfirmButton: false,
-                  timer: 1500,
-                });
-              }
-            });
+          axiosPublic.post(`/users`, userInfo).then((res) => {
+            console.log(res.data);
+            if (res.data.modifiedCount > 0) {
+              Swal.fire({
+                position: "top-center",
+                icon: "success",
+                title: "Your successfully remove the employe",
+                showConfirmButton: false,
+                timer: 1500,
+              });
+            }
+          });
         }
       });
     console.log(employee);

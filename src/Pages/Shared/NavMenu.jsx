@@ -140,7 +140,7 @@ const NavMenu = () => {
                   viewTransitionName: isTransitioning ? "slide" : "",
                 };
               }}
-              to="/request_assets"
+              to="/request_for_assets"
             >
               Request for an Asset
             </NavLink>
