@@ -214,7 +214,7 @@ const NavMenu = () => {
               All Requests
             </NavLink>
           </li>
-          <li>
+          {/* <li>
             <NavLink
               style={({ isActive, isTransitioning }) => {
                 return {
@@ -229,7 +229,7 @@ const NavMenu = () => {
             >
               Customer Request List
             </NavLink>
-          </li>
+          </li> */}
           <li>
             <NavLink
               style={({ isActive, isTransitioning }) => {

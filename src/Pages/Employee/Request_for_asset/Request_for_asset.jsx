@@ -20,13 +20,14 @@ const Request_for_asset = () => {
       hr_email: asset.email,
       employee_email: userData?.email,
       employee_name: userData?.name,
-      date: currentDate.toISOString(),
+      request_date: currentDate.toISOString(),
       asset_id: asset._id,
       status: "pending",
     };
     console.log(assetInfo);
     axiosPublic.post("/request_assets", assetInfo).then((res) => {
       console.log(res.data);
+      refetch();
     });
   };
   return (
