@@ -1,4 +1,5 @@
 import MyAssets from "@/Pages/Employee/MyAssets/MyAssets";
+import MyTeam from "@/Pages/Employee/MyTeam/MyTeam";
 import Request_for_asset from "@/Pages/Employee/Request_for_asset/Request_for_asset";
 import Home from "@/Pages/Home/Home";
 import AddAnEmployee from "@/Pages/HrManager/AddAnEmployee/AddAnEmployee";
@@ -34,6 +35,10 @@ export const Routes = createBrowserRouter([
       {
         path: "/my_assets",
         element: <MyAssets></MyAssets>,
+      },
+      {
+        path: "/my_team",
+        element: <MyTeam></MyTeam>,
       },
       {
         path: "/request_for_assets",
