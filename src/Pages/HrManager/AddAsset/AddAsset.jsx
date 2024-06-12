@@ -1,3 +1,4 @@
+import useAssetsList from "@/Hooks/useAssetsList";
 import useAuth from "@/Hooks/useAuth";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import SectionTitle from "@/components/SectionTitle/SectionTitle";
@@ -13,6 +14,7 @@ const AddAsset = () => {
   const axiosPublic = useAxiosPublic();
   const [type, setType] = useState();
   const [name, setName] = useState();
+  const [assets_list, refetch] = useAssetsList();
 
   const handleName = (e) => {
     setName(e.target.value);
@@ -28,7 +30,7 @@ const AddAsset = () => {
     const item = {
       product_name: name,
       product_type: type,
-      product_quantity: form.product_quantity.value,
+      product_quantity: parseInt(form.product_quantity.value),
       email: user.email,
       added_date: currentDate.toISOString(),
     };
@@ -36,6 +38,15 @@ const AddAsset = () => {
 
     axiosPublic.post("/assets", item).then((res) => {
       console.log(res.data);
+      if (res.data.message === "exist") {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: ` You have already exist:${name} `,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
       if (res.data.insertedId) {
         Swal.fire({
           position: "top-end",

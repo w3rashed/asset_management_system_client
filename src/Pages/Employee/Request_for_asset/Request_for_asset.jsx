@@ -17,15 +17,15 @@ const Request_for_asset = () => {
     const assetInfo = {
       name: asset.product_name,
       type: asset.product_type,
-      quantity: asset.product_quantity,
       hr_email: asset.email,
       employee_email: userData?.email,
       employee_name: userData?.name,
       date: currentDate.toISOString(),
+      asset_id: asset._id,
       status: "pending",
     };
     console.log(assetInfo);
-    axiosPublic.post("/employee_assets", assetInfo).then((res) => {
+    axiosPublic.post("/request_assets", assetInfo).then((res) => {
       console.log(res.data);
     });
   };

@@ -8,7 +8,7 @@ const useAllRequest = () => {
   const { data: AllAssetsRequest = [],refetch } = useQuery({
     queryKey: ["assets request list", user?.email],
     queryFn: async () => {
-      const res = await axiosPublic.get(`/employee_assets/${user?.email}`);
+      const res = await axiosPublic.get(`/request_assets/${user?.email}`);
       return res.data;
     },
   });

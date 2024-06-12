@@ -1,14 +1,54 @@
 import useAllRequest from "@/Hooks/useAllRequest";
+import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import { Button } from "@/components/ui/button";
 import { TextField } from "@mui/material";
+import { useState } from "react";
 
 const AllRequest = () => {
   const [AllAssetsRequest, refetch] = useAllRequest();
+  const axiosPublic = useAxiosPublic();
+  const [note, setNote] = useState("");
+  const currentDate = new Date();
+
+  const handleNote = (e) => {
+    e.preventDefault();
+    setNote(e.target.value);
+  };
+
+  const rejectData = {
+    status: "rejected",
+    note: note,
+  };
   const handleApprove = (asset) => {
+    const assetId = asset.asset_id;
+
+    const approveData = {
+      status: "approved",
+      note: note,
+      Aproved_date: currentDate.toISOString(),
+    };
     console.log(asset);
+    axiosPublic
+      .patch(`/request_assets/approdev/${asset._id}`, approveData)
+      .then((res) => {
+        console.log(res.data);
+        // dicriment product quantity
+        if (res.data.modifiedCount > 0) {
+          axiosPublic.patch(`/asset/dicriment/${assetId}`).then((res) => {
+            console.log(res.data);
+          });
+        }
+        refetch();
+      });
   };
   const handleReject = (asset) => {
     console.log(asset);
+    axiosPublic
+      .patch(`/request_assets/reject/${asset._id}`, rejectData)
+      .then((res) => {
+        console.log(res.data);
+        refetch();
+      });
   };
   return (
     <div>
@@ -37,6 +77,7 @@ const AllRequest = () => {
                 <td>{asset.date}</td>
                 <td>
                   <TextField
+                    onChange={handleNote}
                     name="note"
                     id="filled-search"
                     label="note"
