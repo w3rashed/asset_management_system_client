@@ -9,6 +9,7 @@ import useAxionPublic from "../../../Hooks/useAxiosPublic";
 import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet";
 
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
@@ -81,6 +82,9 @@ const JoinAsEmployee = () => {
   };
   return (
     <div className="w-2/4 mx-auto">
+      <Helmet>
+        <title>Asset Nex | Join as Employee</title>
+      </Helmet>
       <div className="card  w-full md:w-3/4 shadow-2xl bg-base-100 mx-auto">
         <form onSubmit={handleSubmit(onSubmit)} className="card-body">
           <div className="form-control">

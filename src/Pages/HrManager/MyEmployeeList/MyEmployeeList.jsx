@@ -3,6 +3,7 @@ import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import useMyEmployeeList from "@/Hooks/useMyEmployeeList";
 import SectionTitle from "@/components/SectionTitle/SectionTitle";
 import { Button } from "@/components/ui/button";
+import { Helmet } from "react-helmet";
 import Swal from "sweetalert2";
 
 const MyEmployeeList = () => {
@@ -45,6 +46,9 @@ const MyEmployeeList = () => {
   };
   return (
     <div>
+      <Helmet>
+        <title>Asset Nex | My Employee List</title>
+      </Helmet>
       <SectionTitle heading="my employees"></SectionTitle>
       <h3 className="my-4">
         <span className="font-medium">Total Employee:</span>{" "}

@@ -4,6 +4,7 @@ import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import useUsers from "@/Hooks/useUsers";
 import SectionTitle from "@/components/SectionTitle/SectionTitle";
 import { Button } from "@/components/ui/button";
+import { Helmet } from "react-helmet";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
@@ -14,7 +15,7 @@ const AddAnEmployee = () => {
   const [data] = useUsers();
   const navigate = useNavigate();
 
-  // console.log(allEmployee, "all employee");
+  console.log(AddLimit, "all employee");
 
   const handleAdd = (employee) => {
     console.log(employee, "handle add");
@@ -36,9 +37,9 @@ const AddAnEmployee = () => {
     };
 
     console.log(teamInfo, "team info");
-    if (AddLimit.member <= 0) {
+    if (AddLimit.member <= 0 || AddLimit.length == 0) {
       console.log(AddLimit, "add limit aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-      navigate("/");
+      navigate("/subscription_page");
     } else {
       Swal.fire({
         title: `Are you sure? Add: ${employee.name}`,
@@ -75,6 +76,9 @@ const AddAnEmployee = () => {
   };
   return (
     <div>
+      <Helmet>
+        <title>Asset Nex | Add An Employee</title>
+      </Helmet>
       <SectionTitle heading="Add employee"></SectionTitle>
       <h3 className="my-4">
         <span className="font-medium">Your Limit:</span>{" "}

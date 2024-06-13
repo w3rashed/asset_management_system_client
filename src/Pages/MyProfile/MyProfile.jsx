@@ -4,6 +4,7 @@ import useUsers from "@/Hooks/useUsers";
 import SectionTitle from "@/components/SectionTitle/SectionTitle";
 import { Button } from "@/components/ui/button";
 import { TextField } from "@mui/material";
+import { Helmet } from "react-helmet";
 import Swal from "sweetalert2";
 
 const MyProfile = () => {
@@ -44,6 +45,9 @@ const MyProfile = () => {
 
   return (
     <div>
+      <Helmet>
+        <title>Asset Nex | My Profile</title>
+      </Helmet>
       <SectionTitle heading="Update Profile"></SectionTitle>
 
       <form onSubmit={handleUpdate}>
@@ -57,14 +61,14 @@ const MyProfile = () => {
             id="standard-read-only-input"
             name="name"
             label="Full Name"
-            defaultValue={`${userData?.name}`}
+            defaultValue={`${user?.displayName}`}
             variant="standard"
             required
           />
           <TextField
             id="standard-read-only-input"
             label="Email"
-            defaultValue={`${userData?.email}`}
+            defaultValue={`${user?.email}`}
             InputProps={{
               readOnly: true,
             }}

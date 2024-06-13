@@ -3,6 +3,8 @@ import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import useUsers from "@/Hooks/useUsers";
 import { Button } from "@/components/ui/button";
 import { data } from "autoprefixer";
+import { Helmet } from "react-helmet";
+import Swal from "sweetalert2";
 
 const Request_for_asset = () => {
   const [userData, refetch] = useUsers();
@@ -26,12 +28,23 @@ const Request_for_asset = () => {
     };
     console.log(assetInfo);
     axiosPublic.post("/request_assets", assetInfo).then((res) => {
-      console.log(res.data);
+      if (res.data.insertedId) {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Your request has beed successfully send",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
       refetch();
     });
   };
   return (
     <div>
+      <Helmet>
+        <title>Asset Nex | Request for an Assets</title>
+      </Helmet>
       <div className="overflow-x-auto">
         <table className="table">
           {/* head */}
@@ -50,9 +63,18 @@ const Request_for_asset = () => {
                 <th>{idx + 1}</th>
                 <th>{asset?.product_name}</th>
                 <th>{asset?.product_type}</th>
-                <th>{asset?.product_quantity}</th>
+
                 <th>
-                  <Button onClick={() => handleRequest(asset)}>Request</Button>
+                  {asset?.product_quantity !== 0 ? "Available" : "Out of stock"}
+                </th>
+                <th>
+                  {asset?.product_quantity !== 0 ? (
+                    <Button onClick={() => handleRequest(asset)}>
+                      Request
+                    </Button>
+                  ) : (
+                    <Button disabled>Request</Button>
+                  )}
                 </th>
               </tr>
             ))}

@@ -1,18 +1,17 @@
-import SectionTitle from "@/components/SectionTitle/SectionTitle";
-import { Button } from "@/components/ui/button";
-import { useQuery } from "@tanstack/react-query";
-import { IoMdCheckmarkCircleOutline } from "react-icons/io";
-import useAxionPublic from "../../../Hooks/useAxiosPublic";
-import { loadStripe } from "@stripe/stripe-js";
-import { Elements } from "@stripe/react-stripe-js";
 import useAuth from "@/Hooks/useAuth";
-import CheckOutForm from "@/components/CheckoutForm/CheckoutForm";
 import useSubcriptionCard from "@/Hooks/useSubcriptionCard";
+import { loadStripe } from "@stripe/stripe-js";
+import SectionTitle from "../SectionTitle/SectionTitle";
+import { IoMdCheckmarkCircleOutline } from "react-icons/io";
+
+import { Elements } from "@stripe/react-stripe-js";
+import CheckOutForm from "../CheckoutForm/CheckoutForm";
+import { Button } from "../ui/button";
+import { Helmet } from "react-helmet";
 
 // payment key
 const stripePromise = loadStripe(import.meta.env.VITE_PAYMENT_GATEWAY_PK);
-
-const SubscriptionsCard = () => {
+const SubscriptionPage = () => {
   const { setPayment } = useAuth();
   const [SubscriptionsCards] = useSubcriptionCard();
 
@@ -24,6 +23,9 @@ const SubscriptionsCard = () => {
 
   return (
     <div className="mb-10 container mx-auto">
+      <Helmet>
+        <title>Asset Nex | Subscriptions</title>
+      </Helmet>
       <SectionTitle heading="explore our subscriptions"></SectionTitle>
 
       <div className="grid md:grid-cols-3 gap-6">
@@ -65,19 +67,7 @@ const SubscriptionsCard = () => {
             <Elements stripe={stripePromise}>
               <CheckOutForm />
             </Elements>
-            <form>
-              <div className="modal-action">
-                <button
-                  className="px-8 py-2.5 w-full mt-5 leading-5 border rounded-md   bg-[#2ECC71] text-white hover:text-[#2ECC71] hover:bg-transparent hover:border-[#2ECC71] duration-500"
-                  onClick={() => {
-                    const modal = document.getElementById("my_modal_5");
-                    modal.close();
-                  }}
-                >
-                  Confirm
-                </button>
-              </div>
-            </form>
+
             <div className="modal-action flex justify-center w-full">
               <form method="dialog" className="w-full">
                 {/* if there is a button in form, it will close the modal */}
@@ -91,4 +81,4 @@ const SubscriptionsCard = () => {
   );
 };
 
-export default SubscriptionsCard;
+export default SubscriptionPage;

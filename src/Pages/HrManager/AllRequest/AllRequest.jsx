@@ -3,6 +3,8 @@ import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import { Button } from "@/components/ui/button";
 import { TextField } from "@mui/material";
 import { useState } from "react";
+import { Helmet } from "react-helmet";
+import Swal from "sweetalert2";
 
 const AllRequest = () => {
   const [AllAssetsRequest, refetch] = useAllRequest();
@@ -36,6 +38,13 @@ const AllRequest = () => {
         if (res.data.modifiedCount > 0) {
           axiosPublic.patch(`/asset/dicriment/${assetId}`).then((res) => {
             console.log(res.data);
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "Request has been approved",
+              showConfirmButton: false,
+              timer: 1500,
+            });
           });
         }
         refetch();
@@ -46,12 +55,24 @@ const AllRequest = () => {
     axiosPublic
       .patch(`/request_assets/reject/${asset._id}`, rejectData)
       .then((res) => {
+        if (res.data.modifiedCount > 0) {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Request has been rejected",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        }
         console.log(res.data);
         refetch();
       });
   };
   return (
     <div>
+      <Helmet>
+        <title>Asset Nex | All Request</title>
+      </Helmet>
       <div className="overflow-x-auto">
         <table className="table">
           {/* head */}

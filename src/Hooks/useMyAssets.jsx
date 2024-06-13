@@ -1,14 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import useAuth from "./useAuth";
-import useAxiosPublic from "./useAxiosPublic";
+import useAxiosSecure from "./useAxiosSecure";
 
 const useMyAssets = () => {
   const { user } = useAuth();
-  const axiosPublic = useAxiosPublic();
+  const axiosSecure = useAxiosSecure();
   const { data: myAssets = [], refetch } = useQuery({
     queryKey: ["my assets", user?.email],
     queryFn: async () => {
-      const res = await axiosPublic.get(
+      const res = await axiosSecure.get(
         `/request_assets/myAssets/${user?.email}`
       );
       return res.data;

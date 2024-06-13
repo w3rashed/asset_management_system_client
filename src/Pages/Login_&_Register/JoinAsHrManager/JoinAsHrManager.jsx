@@ -1,14 +1,16 @@
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import Swal from "sweetalert2";
-import SocialLogin from "../SocialLogin";
+
 import LoginModal from "@/Pages/Shared/LoginModal/LoginModal";
 import { useForm } from "react-hook-form";
 import useAuth from "@/Hooks/useAuth";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import useAxionPublic from "../../../Hooks/useAxiosPublic";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import useSubcriptionCard from "@/Hooks/useSubcriptionCard";
+import { Helmet } from "react-helmet";
 
 const image_hosting_key = import.meta.env.VITE_IMAGE_HOSTING_KEY;
 const image_hosting_api = `https://api.imgbb.com/1/upload?key=${image_hosting_key}`;
@@ -17,8 +19,12 @@ const JoinAsHrManager = () => {
   const [showForm, setShowForm] = React.useState(false);
   const axiosPublic = useAxionPublic();
   const [showPassword, setShowPassword] = useState(false);
-  const { createUser, updateUserProfile, user } = useAuth();
+  const { createUser, updateUserProfile, user, setPayment } = useAuth();
+  const [SubscriptionsCards] = useSubcriptionCard();
+  const [packageId, setPackageId] = useState(null);
+
   const navigate = useNavigate();
+  console.log;
 
   const {
     register,
@@ -72,7 +78,8 @@ const JoinAsHrManager = () => {
             role: "hrManager",
           };
           axiosPublic.patch("/users", userInfo).then((res) => {
-            if (res.data.insertedId) {
+            console.log(res.data);
+            if (res.data.result.insertedId) {
               reset();
               Swal.fire({
                 position: "top-center",
@@ -82,7 +89,8 @@ const JoinAsHrManager = () => {
                 timer: 1500,
               });
             }
-            navigate("/");
+            setPayment(card[0]);
+            navigate(`payment/${packageId}`);
             refetch();
           });
         });
@@ -90,10 +98,21 @@ const JoinAsHrManager = () => {
     }
   };
 
-  useEffect(() => {}, []);
+  const card = SubscriptionsCards.filter((item) => item._id === packageId);
+  const handlepackage = (e) => {
+    setPackageId(e.target.value);
+  };
+  const handlePayment = () => {
+    setPayment(card[0]);
+  };
+
+  console.log(card[0]);
 
   return (
     <div className="w-2/4 mx-auto">
+      <Helmet>
+        <title>Asset Nex | Join as HR</title>
+      </Helmet>
       <div className="card  w-full md:w-3/4 shadow-2xl bg-base-100 mx-auto">
         <form onSubmit={handleSubmit(onSubmit)} className="card-body">
           <div className="form-control">
@@ -158,6 +177,34 @@ const JoinAsHrManager = () => {
               <span className="text-red-500 mt-1">
                 Date of Birth is required
               </span>
+            )}
+          </div>
+          {/* -----------------------------------------------------------------------package */}
+          <div>
+            <label className="label">
+              <span className="label-text">Select A Package</span>
+            </label>
+            <div className="input input-bordered w-full flex">
+              <select
+                {...register("package")}
+                name=""
+                id=""
+                className="focus:outline-none w-full"
+                onChange={handlepackage}
+                required
+              >
+                <option value="" disabled selected>
+                  Select One
+                </option>
+                {SubscriptionsCards.map((item) => (
+                  <option key={item._id} value={item._id}>
+                    ${item.price} for {item.members} Employee
+                  </option>
+                ))}
+              </select>
+            </div>
+            {errors.package && (
+              <span className="text-red-500 mt-1">Package is required</span>
             )}
           </div>
           <div className="form-control">
@@ -250,12 +297,16 @@ const JoinAsHrManager = () => {
             <button className="btn btn-primary">Login</button>
           </div>
         </form>
-        <p className="flex gap-2 px-8">
+        <Link to={`payment/${packageId}`}>
+          <button onClick={handlePayment} className="btn btn-primary">
+            Login
+          </button>
+        </Link>
+        <p className="flex gap-2 px-8 mb-4">
           Alredy have an account{" "}
           <LoginModal isOpen={showForm} closeModal={() => setShowForm(false)} />
           <button onClick={() => setShowForm(true)}>Login</button>
         </p>
-        <SocialLogin></SocialLogin>
       </div>
       {/* -------------------- */}
       <div>

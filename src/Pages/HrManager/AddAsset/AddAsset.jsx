@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { TextField, Select, MenuItem } from "@mui/material";
 import { useState } from "react";
+import { Helmet } from "react-helmet";
 
 import Swal from "sweetalert2";
 
@@ -61,6 +62,9 @@ const AddAsset = () => {
 
   return (
     <div className="">
+      <Helmet>
+        <title>Asset Nex | Add an Asset</title>
+      </Helmet>
       <SectionTitle heading="Add an asset"></SectionTitle>
       <form onSubmit={onSubmit} action="">
         <div className="grid w-2/4 mx-auto gap-2">

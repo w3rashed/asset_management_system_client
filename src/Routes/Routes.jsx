@@ -12,7 +12,11 @@ import JoinAsEmployee from "@/Pages/Login_&_Register/JoinAsEmployee/JoinAsEmploy
 import JoinAsHrManager from "@/Pages/Login_&_Register/JoinAsHrManager/JoinAsHrManager";
 import MyProfile from "@/Pages/MyProfile/MyProfile";
 import Root from "@/Root/Root";
+import MyDocument from "@/components/MyDocument/MyDocument";
+import Payment from "@/components/Payment/Payment";
+import SubscriptionPage from "@/components/SubscriptionPage/SubscriptionPage";
 import { createBrowserRouter } from "react-router-dom";
+import PrivateRoute from "./PrivateRoute";
 
 export const Routes = createBrowserRouter([
   {
@@ -25,7 +29,11 @@ export const Routes = createBrowserRouter([
       },
       {
         path: "/porfile",
-        element: <MyProfile></MyProfile>,
+        element: (
+          <PrivateRoute>
+            <MyProfile></MyProfile>
+          </PrivateRoute>
+        ),
       },
       // employe route
       {
@@ -35,6 +43,10 @@ export const Routes = createBrowserRouter([
       {
         path: "/my_assets",
         element: <MyAssets></MyAssets>,
+      },
+      {
+        path: "/my_document",
+        element: <MyDocument></MyDocument>,
       },
       {
         path: "/my_team",
@@ -47,8 +59,18 @@ export const Routes = createBrowserRouter([
 
       // hr route
       {
+        path: "/subscription_page",
+        element: <SubscriptionPage></SubscriptionPage>,
+      },
+      {
         path: "/join_hr_manager",
         element: <JoinAsHrManager></JoinAsHrManager>,
+      },
+      {
+        path: "join_hr_manager/payment/:id",
+        element: <Payment></Payment>,
+        loader: ({ params }) =>
+          fetch(`http://localhost:5000/join_hr_manager/payment/${params.id}`),
       },
       {
         path: "/asset_list",

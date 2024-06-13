@@ -6,9 +6,11 @@ import React, { useEffect } from "react";
 import LoginModal from "./LoginModal/LoginModal";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
+import useUsers from "@/Hooks/useUsers";
 
 const NavMenu = () => {
   const { user, logOut } = useAuth();
+  const [userData] = useUsers();
   const axiosPublic = useAxiosPublic();
   const [showForm, setShowForm] = React.useState(false);
   const [showInfo, setShowInfo] = React.useState(false);
@@ -284,7 +286,7 @@ const NavMenu = () => {
   );
 
   return (
-    <div className="navbar bg-base-100">
+    <div className="navbar bg-base-100 z-50 container mx-auto">
       <div className="navbar-start">
         <div className="dropdown">
           <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
@@ -297,7 +299,12 @@ const NavMenu = () => {
             {menuLinks}
           </ul>
         </div>
-        <a className="btn btn-ghost text-xl">Asset Nex</a>
+        {/* ---------------------------------------------------------------------------------------------- */}
+        {userData.company_logo ? (
+          <img src={userData.company_logo} className="w-40 h-24" />
+        ) : (
+          <a className="btn btn-ghost text-xl">Asset Nex</a>
+        )}
       </div>
       <div className="navbar-center hidden lg:flex">
         <ul className="menu menu-horizontal px-1">{menuLinks}</ul>

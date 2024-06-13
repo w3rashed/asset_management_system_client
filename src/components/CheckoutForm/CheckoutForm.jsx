@@ -3,6 +3,7 @@ import useAxiosPublic from "@/Hooks/useAxiosPublic";
 
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 const CheckOutForm = () => {
@@ -13,6 +14,7 @@ const CheckOutForm = () => {
   const elements = useElements();
   const axiosPublic = useAxiosPublic();
   const { user, payment } = useAuth();
+  const navigate = useNavigate();
 
   const price = payment?.price;
   console.log(payment, "paymentssssssssssssssss");
@@ -80,6 +82,7 @@ const CheckOutForm = () => {
 
       if (paymentIntent.status === "succeeded") {
         setTransactionId(paymentIntent.id);
+        navigate("/");
 
         const paymentData = {
           email: user.email,
