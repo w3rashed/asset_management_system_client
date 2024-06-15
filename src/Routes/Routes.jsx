@@ -42,19 +42,35 @@ export const Routes = createBrowserRouter([
       },
       {
         path: "/my_assets",
-        element: <MyAssets></MyAssets>,
+        element: (
+          <PrivateRoute>
+            <MyAssets></MyAssets>,
+          </PrivateRoute>
+        ),
       },
       {
         path: "/my_document",
-        element: <MyDocument></MyDocument>,
+        element: (
+          <PrivateRoute>
+            <MyDocument></MyDocument>,
+          </PrivateRoute>
+        ),
       },
       {
         path: "/my_team",
-        element: <MyTeam></MyTeam>,
+        element: (
+          <PrivateRoute>
+            <MyTeam></MyTeam>,
+          </PrivateRoute>
+        ),
       },
       {
         path: "/request_for_assets",
-        element: <Request_for_asset></Request_for_asset>,
+        element: (
+          <PrivateRoute>
+            <Request_for_asset></Request_for_asset>,
+          </PrivateRoute>
+        ),
       },
 
       // hr route
@@ -70,32 +86,57 @@ export const Routes = createBrowserRouter([
         path: "join_hr_manager/payment/:id",
         element: <Payment></Payment>,
         loader: ({ params }) =>
-          fetch(`http://localhost:5000/join_hr_manager/payment/${params.id}`),
+          fetch(
+            `https://asset-nex-server.vercel.app/join_hr_manager/payment/${params.id}`
+          ),
       },
       {
         path: "/asset_list",
-        element: <AssetsList></AssetsList>,
+        element: (
+          <PrivateRoute>
+            <AssetsList></AssetsList>
+          </PrivateRoute>
+        ),
       },
       {
         path: "asset_list/update_asset/:id",
-        element: <UpdateAsset></UpdateAsset>,
-        
+        element: (
+          <PrivateRoute>
+            <UpdateAsset></UpdateAsset>
+          </PrivateRoute>
+        ),
       },
       {
         path: "/add_asset",
-        element: <AddAsset></AddAsset>,
+        element: (
+          <PrivateRoute>
+            <AddAsset></AddAsset>,
+          </PrivateRoute>
+        ),
       },
       {
         path: "/all_requests",
-        element: <AllRequest></AllRequest>,
+        element: (
+          <PrivateRoute>
+            <AllRequest></AllRequest>,
+          </PrivateRoute>
+        ),
       },
       {
         path: "/my_employee_list",
-        element: <MyEmployeeList></MyEmployeeList>,
+        element: (
+          <PrivateRoute>
+            <MyEmployeeList></MyEmployeeList>,
+          </PrivateRoute>
+        ),
       },
       {
         path: "/add_employee",
-        element: <AddAnEmployee></AddAnEmployee>,
+        element: (
+          <PrivateRoute>
+            <AddAnEmployee></AddAnEmployee>,
+          </PrivateRoute>
+        ),
       },
     ],
   },

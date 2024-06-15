@@ -9,7 +9,7 @@ const useMyTeam = () => {
   const { data: myTeam = [], refetch } = useQuery({
     queryKey: ["my team", userData?.hr_email],
     queryFn: async () => {
-      const res = await axiosPublic.get(`/my_employee/${userData?.hr_email}`);
+      const res = await axiosPublic.get(`/my_team/${userData?.hr_email}`);
       return res.data;
     },
   });

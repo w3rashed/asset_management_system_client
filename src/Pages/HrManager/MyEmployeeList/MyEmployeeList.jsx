@@ -33,7 +33,7 @@ export default function MyEmployeeList() {
   const { user } = useAuth();
   const axiosPublic = useAxiosPublic();
   const hrEmail = user?.email;
-  console.log(hrEmail);
+  console.log(myEmployeeList);
 
   const handleRemove = (row) => {
     const employee_email = row.employee_email;

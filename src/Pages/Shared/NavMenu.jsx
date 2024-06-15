@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { Button } from "@/components/ui/button";
 import useAuth from "@/Hooks/useAuth";
@@ -14,6 +14,7 @@ const NavMenu = () => {
   const axiosPublic = useAxiosPublic();
   const [showForm, setShowForm] = React.useState(false);
   const [showInfo, setShowInfo] = React.useState(false);
+  const navigate = useNavigate();
 
   console.log(user?.email);
 
@@ -34,7 +35,9 @@ const NavMenu = () => {
   }, [user, refetch]);
 
   const handleLogOut = () => {
-    logOut();
+    logOut().then((res) => {
+      navigate("/");
+    });
   };
 
   const role = item?.role;

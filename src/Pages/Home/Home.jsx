@@ -3,6 +3,7 @@ import BannerSlider from "./BannerSlider/BannerSlider";
 import SubscriptionsCard from "./SubscriptionsCard/SubscriptionsCard";
 import useAuth from "@/Hooks/useAuth";
 import About from "./About/About";
+import Sponsor from "./Sponsor";
 
 const Home = () => {
   const { user } = useAuth();
@@ -14,6 +15,7 @@ const Home = () => {
       {!user ? <BannerSlider></BannerSlider> : ""}
       <About></About>
       {!user ? <SubscriptionsCard></SubscriptionsCard> : ""}
+      <Sponsor></Sponsor>
     </div>
   );
 };

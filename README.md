@@ -4,15 +4,60 @@
 
 ## Features and Characteristics
 
-**ASSET NEX**
-- **Home pag**: Users can see an overview of our mission.
+## Roles
 
+- **HR:**
+  - Purchase packages determining asset and employee management capabilities.
+  - Manage assets (add, update, delete).
+  - Manage employees (add, update, delete, assign roles).
+  - Approve or reject employee asset requests.
+  - Update own profile.
 
+- **Employee:**
+  - Request assets for tasks or projects.
+  - View asset list with options to return or print asset details.
+  - View team member details.
+  - Update own profile.
 
-# NPM pacages .....
-- [React Hook from](https://react-hook-form.com)
-- [React icons](https://react-icons.github.io/react-icons)
-- [React sweetalert2](https://sweetalert2.github.io)
+## Technology Stack
+
+- **Frontend:**
+  - React.js for dynamic user interfaces.
+  - Material-UI  for design components.
+  - React Router for navigation.
+
+- **Backend:**
+  - Node.js with Express.js for server-side logic.
+  - MongoDB  for database management.
+  - Authentication and authorization (JWT).
+
+## Features
+
+### For HR:
+
+- Purchase and manage packages.
+- CRUD operations for assets and employees.
+- Approve/reject asset requests.
+- Update own profile.
+
+### For Employee:
+
+- Request assets.
+- View and manage asset list.
+- View team members.
+- Update own profile.
+
+## Deployment
+
+- Hosted on firebase
+- Continuous integration and deployment.
+
+## Getting Started
+
+- Clone the repository.
+- Install dependencies.
+- Configure environment variables.
+- Run the application.
 
 
 

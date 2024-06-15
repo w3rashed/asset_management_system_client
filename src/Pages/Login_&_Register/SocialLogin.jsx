@@ -1,18 +1,41 @@
 import useAuth from "@/Hooks/useAuth";
-import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { GrGoogle } from "react-icons/gr";
 import { Button } from "@/components/ui/button";
+import useAxiosPublic from "@/Hooks/useAxiosPublic";
 
 const SocialLogin = () => {
   const { googleLogin } = useAuth();
+  const axiosPublic = useAxiosPublic();
 
   const navigate = useNavigate();
 
   const handleGoogleLogin = () => {
     googleLogin().then((res) => {
-      console.log(res);
+      console.log(res.user);
+      if (res.user) {
+        const userInfo = {
+          name: res.user.displayName,
+          email: res.user.email,
+          image: res.user.photoURL,
+          birth_date: "",
+          role: "employee",
+          affiliate: "false",
+        };
+        axiosPublic.patch("/users", userInfo).then((res) => {
+          if (res.data.insertedId) {
+            Swal.fire({
+              position: "top-center",
+              icon: "success",
+              title: "Your successfully logged in",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }
+          navigate("/");
+        });
+      }
       Swal.fire({
         position: "top-end",
         icon: "success",

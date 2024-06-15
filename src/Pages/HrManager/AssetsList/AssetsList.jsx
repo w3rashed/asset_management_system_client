@@ -52,7 +52,7 @@ export default function AssetsList() {
   const axiosPublic = useAxiosPublic();
   const { user } = useAuth();
   const { data: assets_list = [], refetch } = useQuery({
-    queryKey: ["assets_lists sort search filter", user?.email],
+    queryKey: ["assets_lists  search filter", user?.email],
     queryFn: async () => {
       const res = await axiosPublic.get(`/assets/${user?.email}`, {
         params: {

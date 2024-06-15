@@ -2,8 +2,10 @@ import SectionTitle from "@/components/SectionTitle/SectionTitle";
 
 const About = () => {
   return (
-    <div className="container mx-auto ">
-      <SectionTitle heading="About"></SectionTitle>
+    <div className="container mx-auto my-20">
+      <div className="my-10">
+        <SectionTitle heading="About" className=""></SectionTitle>
+      </div>
       <p>
         Asset Nex streamlines asset management for HR managers and employees
         alike. With intuitive features tailored to their distinct roles, it

@@ -24,7 +24,9 @@ const SubscriptionsCard = () => {
 
   return (
     <div className="mb-10 container mx-auto">
-      <SectionTitle heading="explore our subscriptions"></SectionTitle>
+      <div className="my-10">
+        <SectionTitle heading="explore our subscriptions"></SectionTitle>
+      </div>
 
       <div className="grid md:grid-cols-3 gap-6">
         {SubscriptionsCards.map((item) => (
