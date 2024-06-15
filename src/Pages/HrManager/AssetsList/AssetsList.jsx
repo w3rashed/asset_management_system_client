@@ -13,6 +13,8 @@ import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import useAuth from "@/Hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
 import { IoMdSearch } from "react-icons/io";
+import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const columns = [
   { id: "Product Name", label: "Product Name", minWidth: 170 },
@@ -49,7 +51,7 @@ export default function AssetsList() {
   const axiosPublic = useAxiosPublic();
   const { user } = useAuth();
   const { data: assets_list = [], refetch } = useQuery({
-    queryKey: ["assets_lists", user?.email],
+    queryKey: ["assets_lists sort search filter", user?.email],
     queryFn: async () => {
       const res = await axiosPublic.get(`/assets/${user?.email}`, {
         params: {
@@ -70,8 +72,21 @@ export default function AssetsList() {
 
   console.log(searchValue, filterValue, sortValue);
 
-  const handleUpdate = (row) => {
-    console.log(row);
+  // delete an asset
+  const handleDelete = (row) => {
+    axiosPublic.delete(`/deleteAssets/${row._id}`).then((res) => {
+      console.log(res.data);
+      if (res.data.deletedCount > 0) {
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: `${row.product_name} has been deleted`,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        refetch();
+      }
+    });
   };
 
   const handleChangePage = (event, newPage) => {
@@ -85,7 +100,7 @@ export default function AssetsList() {
 
   return (
     <div>
-      <div className="flex justify-center mt-2 mb-4">
+      <div className="flex justify-center mt-2 mb-4 gap-4">
         <label className="input input-bordered flex items-center gap-2">
           <input
             onChange={handleSearch}
@@ -96,8 +111,8 @@ export default function AssetsList() {
           />
           <IoMdSearch></IoMdSearch>
         </label>
-        <div>
-          <select onChange={handleFilter} name="" id="">
+        <div className="input input-bordered flex">
+          <select onChange={handleFilter} className="focus:outline-none w-full">
             <option value="" disabled selected>
               Select Filter
             </option>
@@ -107,8 +122,8 @@ export default function AssetsList() {
             <option value="non_returnable">Non Returnable</option>
           </select>
         </div>
-        <div>
-          <select onChange={handleSort} name="" id="">
+        <div className="input input-bordered flex">
+          <select onChange={handleSort} className="focus:outline-none w-full">
             <option value="" disabled selected>
               Select Sort
             </option>
@@ -137,12 +152,7 @@ export default function AssetsList() {
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((row) => {
                   return (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      tabIndex={-1}
-                      key={row.code}
-                    >
+                    <TableRow hover role="checkbox" tabIndex={-1} key={row._id}>
                       {/* {columns.map((column) => {
                       const value = row[column.id];
                       return (
@@ -158,9 +168,14 @@ export default function AssetsList() {
                       <TableCell>{row?.product_quantity}</TableCell>
                       <TableCell>{row?.added_date.slice(0, 10)}</TableCell>
                       <TableCell>
-                        <Button onClick={() => handleUpdate(row)}>
-                          hiiiiii
-                        </Button>
+                        <div className="flex gap-2">
+                          <Link to={`update_asset/${row._id}`}>
+                            <Button>Update</Button>
+                          </Link>
+                          <Button onClick={() => handleDelete(row)}>
+                            Delete
+                          </Button>
+                        </div>
                       </TableCell>
                     </TableRow>
                   );

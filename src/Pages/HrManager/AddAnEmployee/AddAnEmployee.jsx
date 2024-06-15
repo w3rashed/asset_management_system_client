@@ -22,6 +22,7 @@ const AddAnEmployee = () => {
     const teamInfo = {
       hrEmail: data.email,
       company_logo: data.company_logo,
+
       employee_email: employee.email,
       elployee_name: employee.name,
       employee_img: employee.image,
@@ -34,6 +35,7 @@ const AddAnEmployee = () => {
       affiliate: "true",
       hr_email: data.email,
       company_logo: data.company_logo,
+      company_name: data.company_name,
     };
 
     console.log(teamInfo, "team info");

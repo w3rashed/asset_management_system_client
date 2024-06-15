@@ -3,7 +3,9 @@ import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import SectionTitle from "@/components/SectionTitle/SectionTitle";
 import { Button } from "@/components/ui/button";
 import { TextField } from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 
 const UpdateAsset = () => {
@@ -11,6 +13,16 @@ const UpdateAsset = () => {
   const axiosPublic = useAxiosPublic();
   const [type, setType] = useState();
   const [name, setName] = useState();
+  const id = useParams();
+  const navigate = useNavigate();
+  console.log(id);
+  const { data: asset, refetch } = useQuery({
+    queryKey: ["my assets", user?.email],
+    queryFn: async () => {
+      const res = await axiosPublic.get(`/anAssets/${id.id}`);
+      return res.data;
+    },
+  });
 
   const handleName = (e) => {
     setName(e.target.value);
@@ -26,15 +38,15 @@ const UpdateAsset = () => {
     const item = {
       product_name: name,
       product_type: type,
-      product_quantity: form.product_quantity.value,
+      product_quantity: parseInt(form.product_quantity.value),
       email: user.email,
       added_date: currentDate.toISOString(),
     };
     console.log(item);
 
-    axiosPublic.post("/assets", item).then((res) => {
+    axiosPublic.patch(`/assets/${id.id}`, item).then((res) => {
       console.log(res.data);
-      if (res.data.insertedId) {
+      if (res.data.modifiedCount > 0) {
         Swal.fire({
           position: "top-end",
           icon: "success",
@@ -42,9 +54,13 @@ const UpdateAsset = () => {
           showConfirmButton: false,
           timer: 1500,
         });
+        refetch();
+        navigate("/asset_list");
       }
     });
   };
+
+  console.log(asset);
   return (
     <div className="">
       <SectionTitle heading="update an asset"></SectionTitle>
@@ -57,7 +73,7 @@ const UpdateAsset = () => {
             required
           >
             <option value="" disabled selected>
-              Select One
+              {asset?.product_name}
             </option>
             <option value="Laptops">Laptops</option>
             <option value="Keyboards">Keyboards</option>
@@ -77,10 +93,10 @@ const UpdateAsset = () => {
             required
           >
             <option value="" disabled selected>
-              Select One
+              {asset?.product_type}
             </option>
-            <option value="refundable">Refundable</option>
-            <option value="non_refundable">Non Refundable</option>
+            <option value="returnable">Returnable</option>
+            <option value="non_returnable">Non Returnable</option>
           </select>
           <TextField
             name="product_quantity"
@@ -90,6 +106,7 @@ const UpdateAsset = () => {
             type="number"
             className=""
             required
+            defaultValue={asset?.product_quantity}
           />
 
           <Button type="submit" className="mt-3">

@@ -77,8 +77,9 @@ export const Routes = createBrowserRouter([
         element: <AssetsList></AssetsList>,
       },
       {
-        path: "update_asset",
+        path: "asset_list/update_asset/:id",
         element: <UpdateAsset></UpdateAsset>,
+        
       },
       {
         path: "/add_asset",
