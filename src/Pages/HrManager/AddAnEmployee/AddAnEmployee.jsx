@@ -5,7 +5,7 @@ import useUsers from "@/Hooks/useUsers";
 import SectionTitle from "@/components/SectionTitle/SectionTitle";
 import { Button } from "@/components/ui/button";
 import { Helmet } from "react-helmet";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 const AddAnEmployee = () => {
