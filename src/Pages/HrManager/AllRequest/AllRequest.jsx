@@ -14,6 +14,8 @@ import Swal from "sweetalert2";
 import useAuth from "@/Hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
 import { TextField } from "@mui/material";
+import { Helmet } from "react-helmet";
+import SectionTitle from "@/components/SectionTitle/SectionTitle";
 
 const columns = [
   { id: "Product Name", label: "Product Name", minWidth: 120 },
@@ -139,6 +141,10 @@ export default function AllRequest() {
 
   return (
     <div>
+      <Helmet>
+        <title>Asset Nex | All Requests</title>
+      </Helmet>
+      <SectionTitle heading="All Requests"></SectionTitle>
       <div className="flex justify-center mt-2 mb-4 gap-4">
         <label className="input input-bordered flex items-center gap-2">
           <input

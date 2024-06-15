@@ -1,14 +1,35 @@
-import useAddLimit from "@/Hooks/useAddLimit";
-import useAllEmployee from "@/Hooks/useAllEmployee";
-import useAxiosPublic from "@/Hooks/useAxiosPublic";
-import useUsers from "@/Hooks/useUsers";
-import SectionTitle from "@/components/SectionTitle/SectionTitle";
+import * as React from "react";
+import Paper from "@mui/material/Paper";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TablePagination from "@mui/material/TablePagination";
+import TableRow from "@mui/material/TableRow";
 import { Button } from "@/components/ui/button";
-import { Helmet } from "react-helmet";
-import { useNavigate } from "react-router-dom";
+import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import Swal from "sweetalert2";
+import { Helmet } from "react-helmet";
+import SectionTitle from "@/components/SectionTitle/SectionTitle";
+import useAllEmployee from "@/Hooks/useAllEmployee";
+import useAddLimit from "@/Hooks/useAddLimit";
+import useUsers from "@/Hooks/useUsers";
+import { useNavigate } from "react-router-dom";
 
-const AddAnEmployee = () => {
+const columns = [
+  { id: "Image", label: "Image", minWidth: 170 },
+  { id: "Name", label: "Name", minWidth: 170 },
+  { id: "User Tpye", label: "User Tpye", minWidth: 170 },
+  { id: "Birth Of Date", label: "Birth Of Date", minWidth: 170 },
+  { id: "Action", label: "Action", minWidth: 170 },
+];
+
+export default function MyEmAddAnEmployeeployeeList() {
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+
+  // --------------------------------------------------
   const [allEmployee, refetch] = useAllEmployee();
   const [AddLimit, refetchLimit = refetch] = useAddLimit();
   const axiosPublic = useAxiosPublic();
@@ -17,21 +38,21 @@ const AddAnEmployee = () => {
 
   console.log(AddLimit, "all employee");
 
-  const handleAdd = (employee) => {
-    console.log(employee, "handle add");
+  const handleAdd = (row) => {
+    console.log(row, "handle add");
     const teamInfo = {
       hrEmail: data.email,
       company_logo: data.company_logo,
 
-      employee_email: employee.email,
-      elployee_name: employee.name,
-      employee_img: employee.image,
-      employee_birth_of_date: employee.birth_date,
+      employee_email: row.email,
+      elployee_name: row.name,
+      employee_img: row.image,
+      employee_birth_of_date: row.birth_date,
       role: "employee",
     };
 
     const userInfo = {
-      email: employee.email,
+      email: row.email,
       affiliate: "true",
       hr_email: data.email,
       company_logo: data.company_logo,
@@ -44,7 +65,7 @@ const AddAnEmployee = () => {
       navigate("/subscription_page");
     } else {
       Swal.fire({
-        title: `Are you sure? Add: ${employee.name}`,
+        title: `Are you sure? Add: ${row.name}`,
 
         icon: "warning",
         showCancelButton: true,
@@ -62,7 +83,7 @@ const AddAnEmployee = () => {
                   Swal.fire({
                     position: "top-center",
                     icon: "success",
-                    title: `Successfully added: ${employee.name}`,
+                    title: `Successfully added: ${row.name}`,
                     showConfirmButton: false,
                     timer: 1500,
                   });
@@ -76,6 +97,18 @@ const AddAnEmployee = () => {
       });
     }
   };
+
+  // --------------------------------
+
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(+event.target.value);
+    setPage(0);
+  };
+
   return (
     <div>
       <Helmet>
@@ -86,55 +119,65 @@ const AddAnEmployee = () => {
         <span className="font-medium">Your Limit:</span>{" "}
         <span className="border-2 py-1 px-3 rounded-xl">{AddLimit.member}</span>
       </h3>
-      <div className="overflow-x-auto">
-        <table className="table">
-          {/* head */}
-          <thead>
-            <tr>
-              <th>
-                <label>
-                  <input type="checkbox" className="checkbox" />
-                </label>
-              </th>
-              <th>#</th>
-              <th>Image</th>
-              <th>Name</th>
-              <th>User Tpye</th>
-              <th>Birth Of Date</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {allEmployee.map((employee, idx) => (
-              <tr key={employee._id}>
-                <th>
-                  <label>
-                    <input type="checkbox" className="checkbox" />
-                  </label>
-                </th>
-                <th>{idx + 1}</th>
-                <td>
-                  <img src={employee?.image} className="size-14 rounded-full" />
-                </td>
-                <td className="uppercase">{employee.name}</td>
-                <td className="uppercase">{employee.role}</td>
-                <td className="uppercase">{employee.birth_date}</td>
-                {employee.affiliate == "true" ? (
-                  <th>
-                    <Button disabled>Add </Button>
-                  </th>
-                ) : (
-                  <th onClick={() => handleAdd(employee)}>
-                    <Button>Add</Button>
-                  </th>
-                )}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+      <Paper sx={{ width: "100%" }}>
+        <TableContainer sx={{ maxHeight: 440 }}>
+          <Table stickyHeader aria-label="sticky table">
+            <TableHead>
+              <TableRow>
+                {columns.map((column) => (
+                  <TableCell
+                    key={column.id}
+                    align={column.align}
+                    style={{ minWidth: column.minWidth }}
+                  >
+                    {column.label}
+                  </TableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {allEmployee
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((row) => {
+                  return (
+                    <TableRow hover role="checkbox" tabIndex={-1} key={row._id}>
+                      <TableCell>
+                        <img
+                          src={row?.image}
+                          className="size-14 rounded-full"
+                        />
+                      </TableCell>
+                      <TableCell>{row?.name}</TableCell>
+                      <TableCell>{row?.role}</TableCell>
+                      <TableCell>{row?.birth_date}</TableCell>
+                      {/* <TableCell>{row?.added_date.slice(0, 10)}</TableCell> */}
+                      <TableCell>
+                        {row.affiliate == "true" ? (
+                          <th>
+                            <Button disabled>Add </Button>
+                          </th>
+                        ) : (
+                          <th onClick={() => handleAdd(row)}>
+                            <Button>Add</Button>
+                          </th>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[5, 10]}
+          component="div"
+          count={allEmployee.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
+      </Paper>
     </div>
   );
-};
-
-export default AddAnEmployee;
+}

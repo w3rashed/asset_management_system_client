@@ -15,6 +15,7 @@ import { useQuery } from "@tanstack/react-query";
 import { IoMdSearch } from "react-icons/io";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
+import { Helmet } from "react-helmet";
 
 const columns = [
   { id: "Product Name", label: "Product Name", minWidth: 170 },
@@ -100,6 +101,9 @@ export default function AssetsList() {
 
   return (
     <div>
+      <Helmet>
+        <title>Asset Nex | Asset list</title>
+      </Helmet>
       <div className="flex justify-center mt-2 mb-4 gap-4">
         <label className="input input-bordered flex items-center gap-2">
           <input
