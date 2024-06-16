@@ -14,7 +14,7 @@ const BannerSlider = () => {
     <Swiper
       pagination={true}
       modules={[Pagination, Autoplay]}
-      className="mySwiper w-full lg:h-[80vh] -z-0"
+      className="mySwiper w-full lg:h-[80vh] z-0"
       autoplay={{
         delay: 4000,
         disableOnInteraction: false,
